@@ -198,8 +198,8 @@ const Rulebook = () => {
                 <p className="font-bold text-lg">The Chop Mechanic</p>
                 <p>The main mechanic in LIMBo is the chop action card:</p>
                 <ul className="list-disc list-inside mt-2">
-                  <li>Immediately removes a target body part</li>
-                  <li>Card is reshuffled back into deck after use</li>
+                  <li>Immediately removes a target body part (chopped body part goes into the discard pile)</li>
+                  <li>Chop card is reshuffled back into deck after use</li>
                   <li>Chop cards become more frequent as game progresses</li>
                   <li>Players must plan around increasing chop frequency</li>
                 </ul>
@@ -283,8 +283,7 @@ const Rulebook = () => {
                 <p className="font-bold">Losing:</p>
                 <ul className="list-disc list-inside mt-2">
                   <li>Lose all body parts</li>
-                  <li>No replacement parts available on your turn</li>
-                  <li>All cards in hand go to discard pile</li>
+                  <li>All cards in hand go to discard pile (chops are returned to the deck instead)</li>
                 </ul>
               </div>
 
