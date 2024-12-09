@@ -8,25 +8,33 @@ import witchIcon from '../assets/witch.png';
 import pumpkinHeadIcon from '../assets/pumpkin-head.png';
 
 const EffectCard = ({ description }) => (
-  <div className="bg-gray-100 p-3 rounded-md text-gray-700 text-sm leading-relaxed">
+  <div className="bg-blue-100 p-4 rounded-xl border-2 border-black 
+    shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] text-black font-medium">
     {description}
   </div>
 );
 
 const SetEffect = ({ pieces, description }) => (
   <div className="flex items-start gap-3">
-    <div className="flex-shrink-0 w-12 h-12 bg-red-400 rounded-full flex items-center justify-center">
-      <span className="font-bold">{pieces}pc</span>
+    <div className="flex-shrink-0 w-16 h-16 bg-red-400 rounded-full border-4 border-black
+      shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] 
+      flex items-center justify-center">
+      <span className="font-bold text-black text-xl">{pieces}pc</span>
     </div>
-    <EffectCard description={description} />
+    <div className="flex-1">
+      <EffectCard description={description} />
+    </div>
   </div>
 );
 
 const Archetype = ({ name, icon, setEffects, armEffect }) => (
-  <div className="bg-slate-900 text-white p-6 rounded-xl shadow-lg mb-6">
+  <div className="bg-yellow-300 p-6 rounded-3xl border-4 border-black 
+    shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]
+    transition-all duration-300 mb-8">
     <div className="text-center mb-6">
-      <h2 className="text-2xl font-bold mb-4 text-gray-200">{name}</h2>
-      <div className="w-32 h-32 rounded-full mx-auto mb-4 bg-red-400 overflow-hidden">
+      <h2 className="text-3xl font-bold mb-4 text-black">{name}</h2>
+      <div className="w-32 h-32 rounded-full mx-auto mb-4 bg-purple-300 border-4 border-black
+        shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden transform hover:scale-105 transition-transform">
         <img 
           src={icon} 
           alt={`${name} icon`}
@@ -35,24 +43,32 @@ const Archetype = ({ name, icon, setEffects, armEffect }) => (
       </div>
     </div>
 
-    <div className="space-y-4">
-      <h3 className="text-xl font-bold mb-3">Set Effects</h3>
-      <div className="space-y-4">
-        {setEffects.map((effect, index) => (
-          <SetEffect 
-            key={index}
-            pieces={effect.pieces}
-            description={effect.description}
-          />
-        ))}
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-2xl font-bold mb-4 text-black">Set Effects</h3>
+        <div className="space-y-4">
+          {setEffects.map((effect, index) => (
+            <SetEffect 
+              key={index}
+              pieces={effect.pieces}
+              description={effect.description}
+            />
+          ))}
+        </div>
       </div>
 
-      <h3 className="text-xl font-bold mt-6 mb-3">Arm Effect</h3>
-      <div className="flex items-start gap-3">
-        <div className="flex-shrink-0 w-12 h-12 bg-red-400 rounded-full flex items-center justify-center">
-          <span className="font-semibold">Arm</span>
+      <div>
+        <h3 className="text-2xl font-bold mb-4 text-black">Arm Effect</h3>
+        <div className="flex items-start gap-3">
+          <div className="flex-shrink-0 w-16 h-16 bg-green-400 rounded-full border-4 border-black
+            shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
+            flex items-center justify-center">
+            <span className="font-bold text-black">Arm</span>
+          </div>
+          <div className="flex-1">
+            <EffectCard description={armEffect} />
+          </div>
         </div>
-        <EffectCard description={armEffect} />
       </div>
     </div>
   </div>
@@ -138,16 +154,16 @@ const Sets = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="w-full bg-white shadow-sm p-4 flex items-center justify-between sticky top-0 z-10">
+    <div className="min-h-screen flex flex-col bg-orange-100">
+      <header className="w-full bg-purple-300 p-4 flex items-center justify-between border-b-4 border-black">
         <Link 
           to="/"
-          className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
+          className="flex items-center gap-2 text-black hover:text-blue-600 transition-colors"
         >
-          <ChevronLeft size={24} />
-          <span className="text-lg font-medium">Back to Game</span>
+          <ChevronLeft size={24} className="font-bold" />
+          <span className="text-lg font-bold">Back to Game</span>
         </Link>
-        <span className="text-lg font-medium text-blue-600">Sets</span>
+        <span className="text-2xl font-bold text-black">Character Sets</span>
       </header>
 
       <div className="max-w-md mx-auto p-4 pb-8">
