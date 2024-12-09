@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import frankensteinIcon from '../assets/frankenstein.png';
@@ -27,54 +27,32 @@ const SetEffect = ({ pieces, description }) => (
   </div>
 );
 
-const Archetype = ({ name, icon, setEffects, armEffect }) => (
-  <div className="bg-yellow-300 p-6 rounded-3xl border-4 border-black 
-    shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]
-    transition-all duration-300 mb-8">
-    <div className="text-center mb-6">
-      <h2 className="text-3xl font-bold mb-4 text-black">{name}</h2>
-      <div className="w-32 h-32 rounded-full mx-auto mb-4 bg-purple-300 border-4 border-black
-        shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden transform hover:scale-105 transition-transform">
-        <img 
-          src={icon} 
-          alt={`${name} icon`}
-          className="w-full h-full object-cover object-center"
-        />
-      </div>
+const CharacterTab = ({ name, icon, isActive, onClick }) => (
+  <button
+    onClick={onClick}
+    className={`flex flex-col items-center p-2 w-20 ${
+      isActive 
+        ? 'bg-yellow-300 border-black border-4 rounded-t-xl' 
+        : 'bg-purple-300 border-black border-2 rounded-xl hover:bg-yellow-200'
+    } transition-all duration-200`}
+  >
+    <div className={`w-12 h-12 rounded-full overflow-hidden border-2 border-black
+      ${isActive ? 'shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : ''}`}>
+      <img 
+        src={icon} 
+        alt={name}
+        className="w-full h-full object-cover"
+      />
     </div>
-
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-2xl font-bold mb-4 text-black">Set Effects</h3>
-        <div className="space-y-4">
-          {setEffects.map((effect, index) => (
-            <SetEffect 
-              key={index}
-              pieces={effect.pieces}
-              description={effect.description}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <h3 className="text-2xl font-bold mb-4 text-black">Arm Effect</h3>
-        <div className="flex items-start gap-3">
-          <div className="flex-shrink-0 w-16 h-16 bg-green-400 rounded-full border-4 border-black
-            shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
-            flex items-center justify-center">
-            <span className="font-bold text-black">Arm</span>
-          </div>
-          <div className="flex-1">
-            <EffectCard description={armEffect} />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <span className="text-xs font-bold text-black mt-1 line-clamp-2 text-center">
+      {name}
+    </span>
+  </button>
 );
 
 const Sets = () => {
+  const [activeSet, setActiveSet] = useState('Frankenstein');
+  
   const archetypes = [
     {
       name: 'Frankenstein',
@@ -153,6 +131,8 @@ const Sets = () => {
     }
   ];
 
+  const activeArchetype = archetypes.find(a => a.name === activeSet);
+
   return (
     <div className="min-h-screen flex flex-col bg-orange-100">
       <header className="w-full bg-purple-300 p-4 flex items-center justify-between border-b-4 border-black">
@@ -166,19 +146,81 @@ const Sets = () => {
         <span className="text-2xl font-bold text-black">Character Sets</span>
       </header>
 
-      <div className="max-w-md mx-auto p-4 pb-8">
-        <div className="space-y-6">
-          {archetypes.map((archetype, index) => (
-            <Archetype 
-              key={index}
-              name={archetype.name}
-              icon={archetype.icon}
-              setEffects={archetype.setEffects}
-              armEffect={archetype.armEffect}
-            />
-          ))}
+      {/* Quick Navigation Tabs */}
+      <div className="sticky top-0 z-10 bg-orange-100 border-b-4 border-black shadow-md">
+        <div className="max-w-md mx-auto px-2 pt-2">
+          <div className="flex justify-between gap-1 overflow-x-auto pb-2 scrollbar-hide">
+            {archetypes.map((archetype) => (
+              <CharacterTab
+                key={archetype.name}
+                name={archetype.name}
+                icon={archetype.icon}
+                isActive={activeSet === archetype.name}
+                onClick={() => setActiveSet(archetype.name)}
+              />
+            ))}
+          </div>
         </div>
       </div>
+
+      {/* Active Character Content */}
+      <div className="flex-1 max-w-md mx-auto w-full p-4">
+        <div className="bg-yellow-300 p-6 rounded-3xl border-4 border-black 
+          shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          
+          <div className="text-center mb-6">
+            <div className="w-32 h-32 rounded-full mx-auto mb-4 bg-purple-300 border-4 border-black
+              shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden">
+              <img 
+                src={activeArchetype.icon} 
+                alt={`${activeArchetype.name} icon`}
+                className="w-full h-full object-cover object-center"
+              />
+            </div>
+            <h2 className="text-3xl font-bold text-black">{activeArchetype.name}</h2>
+          </div>
+
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-2xl font-bold mb-4 text-black">Set Effects</h3>
+              <div className="space-y-4">
+                {activeArchetype.setEffects.map((effect, index) => (
+                  <SetEffect 
+                    key={index}
+                    pieces={effect.pieces}
+                    description={effect.description}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-2xl font-bold mb-4 text-black">Arm Effect</h3>
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 w-16 h-16 bg-green-400 rounded-full border-4 border-black
+                  shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
+                  flex items-center justify-center">
+                  <span className="font-bold text-black">Arm</span>
+                </div>
+                <div className="flex-1">
+                  <EffectCard description={activeArchetype.armEffect} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* CSS for hiding scrollbar */}
+      <style>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </div>
   );
 };
