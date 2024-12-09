@@ -10,7 +10,8 @@ import {
   Sparkles,
   Scissors,
   Users,
-  Brain
+  Brain,
+  HandMetal
 } from 'lucide-react';
 
 const RuleSection = ({ title, icon: Icon, children, isOpen, onToggle }) => {
@@ -61,7 +62,6 @@ const Rulebook = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-orange-100">
-      {/* Header */}
       <header className="w-full bg-purple-300 p-4 flex items-center justify-between border-b-4 border-black">
         <Link 
           to="/"
@@ -74,10 +74,9 @@ const Rulebook = () => {
       </header>
 
       <div className="flex-1 max-w-2xl mx-auto w-full p-4">
-        {/* Quick nav buttons */}
         <div className="grid grid-cols-2 gap-4 mb-6">
           <button
-            onClick={() => setOpenSections(new Set(['gameIntro', 'gameLoop', 'gameplay', 'mechanics', 'strategy', 'victory']))}
+            onClick={() => setOpenSections(new Set(['gameIntro', 'gameSetup', 'gameLoop', 'gameplay', 'mechanics', 'strategy', 'victory']))}
             className="px-4 py-3 rounded-xl bg-green-400 text-black font-bold border-4 border-black
               shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]
               transition-all duration-150"
@@ -94,8 +93,57 @@ const Rulebook = () => {
           </button>
         </div>
 
-        {/* Rule sections */}
         <div className="space-y-6">
+          <RuleSection 
+            title="What is LIMBo?" 
+            icon={Scroll}
+            isOpen={openSections.has('gameIntro')}
+            onToggle={() => toggleSection('gameIntro')}
+          >
+            <div className="space-y-4">
+              <p className="font-bold text-lg">Welcome to the world of LIMBo!</p>
+              <p>LIMBo is a semi-competitive party card game where you compete to be the last player standing - quite literally! You'll need to outmaneuver, outthink, and sometimes team up with other players to survive.</p>
+              
+              <div className="bg-yellow-200 rounded-xl p-4 border-2 border-black mt-4">
+                <p className="font-bold">Game Overview:</p>
+                <ul className="list-disc list-inside mt-2 space-y-2">
+                  <li>Semi-competitive party card game</li>
+                  <li>Features 5 unique fantasy-themed body archetypes</li>
+                  <li>Turn-based gameplay with strategic choices</li>
+                  <li>Mix of action cards and body parts</li>
+                  <li>Last player with any body parts remaining wins!</li>
+                </ul>
+              </div>
+            </div>
+          </RuleSection>
+
+          <RuleSection 
+            title="Game Setup" 
+            icon={HandMetal}
+            isOpen={openSections.has('gameSetup')}
+            onToggle={() => toggleSection('gameSetup')}
+          >
+            <div className="space-y-4">
+              <p>Before starting the game:</p>
+              <ol className="list-decimal list-inside space-y-2">
+                <li>Players sit in a circle for smooth gameplay flow</li>
+                <li>Sort cards into two decks:
+                  <ul className="list-disc ml-6 mt-1">
+                    <li>Action Cards Deck</li>
+                    <li>Body Parts Deck</li>
+                  </ul>
+                </li>
+                <li>Each player draws their starting hand:
+                  <ul className="list-disc ml-6 mt-1">
+                    <li>3 cards from Action Cards Deck</li>
+                    <li>2 cards from Body Parts Deck</li>
+                  </ul>
+                </li>
+                <li>Choose first player and turn order direction</li>
+              </ol>
+            </div>
+          </RuleSection>
+
           <RuleSection 
             title="Game Loop & Actions" 
             icon={Users}
@@ -104,44 +152,39 @@ const Rulebook = () => {
           >
             <div className="space-y-4">
               <div className="bg-yellow-300 rounded-xl p-4 border-2 border-black">
-                <p className="font-bold text-lg">Each Turn Consists Of:</p>
+                <p className="font-bold text-lg">Turn Phases:</p>
                 <ol className="list-decimal list-inside mt-2 space-y-2">
-                  <li>Draw Phase: Draw 2 cards using the digital companion</li>
-                  <li>Action Phase: You have 3 actions per turn</li>
+                  <li>Draw Phase:
+                    <ul className="list-disc ml-6 mt-1">
+                      <li>Draw 2 cards using the digital companion</li>
+                      <li>Digital companion decides which deck(s) you draw from</li>
+                      <li>Must complete both draws before taking actions</li>
+                    </ul>
+                  </li>
+                  <li>Action Phase: 3 actions available</li>
                   <li>End Phase: Discard down to 7 cards if needed</li>
                 </ol>
               </div>
               
-              <div className="mt-6">
-                <p className="font-bold text-lg mb-2">Actions (3 per turn):</p>
-                <ul className="list-disc list-inside space-y-2">
-                  <li>Play an action card (counts as 1 action)</li>
-                  <li>Use a body part's ability (counts as 1 action)</li>
-                  <li>Use a set effect (counts as 1 action unless specified otherwise)</li>
+              <div className="bg-green-200 rounded-xl p-4 border-2 border-black">
+                <p className="font-bold text-lg">Available Actions (3 per turn):</p>
+                <ul className="list-disc list-inside mt-2">
+                  <li>Play an action card from your hand (costs 1 action)</li>
+                  <li>Activate an arm effect (costs 1 action - can be used even with just one arm of that archetype)</li>
                 </ul>
               </div>
-              
-              <div className="bg-purple-300 rounded-xl p-4 border-2 border-black mt-4">
-                <p className="font-bold">Important Rules:</p>
-                <ul className="list-disc list-inside mt-2 space-y-2">
-                  <li>You must draw both cards before taking any actions</li>
-                  <li>Unused actions do not carry over to next turn</li>
-                  <li>Some cards or abilities might grant extra actions</li>
-                  <li>Hand limit of 7 cards at end of turn</li>
+
+              <div className="bg-blue-200 rounded-xl p-4 border-2 border-black">
+                <p className="font-bold text-lg mb-2">Set Effects:</p>
+                <p>Set effects are automatic passive abilities that trigger when conditions are met:</p>
+                <ul className="list-disc list-inside mt-2">
+                  <li>Do not use action points</li>
+                  <li>Trigger automatically when conditions are met</li>
+                  <li>Active as long as you have the required body parts</li>
+                  <li>Different for each archetype</li>
                 </ul>
               </div>
             </div>
-          </RuleSection>
-
-          <RuleSection 
-            title="What is LIMBo?" 
-            icon={Scroll}
-            isOpen={openSections.has('gameIntro')}
-            onToggle={() => toggleSection('gameIntro')}
-          >
-            <p className="font-bold text-lg mb-4">Welcome to the world of LIMBo!</p>
-            <p>LIMBo is a semi-competitive party card game where you compete to be the last player standing - quite literally! The game features 5 unique body archetypes inspired by fantasy elements, each with their own special abilities and strategies.</p>
-            <p className="mt-4">In this turn-based adventure, you'll use a combination of action cards and body parts to outmaneuver your opponents. Will you be the aggressor, the defender, or perhaps form temporary alliances? The choice is yours!</p>
           </RuleSection>
 
           <RuleSection 
@@ -151,53 +194,105 @@ const Rulebook = () => {
             onToggle={() => toggleSection('mechanics')}
           >
             <div className="space-y-4">
-              <p className="font-bold text-lg">The Chop Mechanic</p>
-              <p>The main mechanic in LIMBo is the chop action card. When used, it immediately removes a body part from the field. After use, the card is reshuffled back into the deck - meaning the longer the game goes, the more frequent chop cards become!</p>
+              <div className="bg-red-200 rounded-xl p-4 border-2 border-black">
+                <p className="font-bold text-lg">The Chop Mechanic</p>
+                <p>The main mechanic in LIMBo is the chop action card:</p>
+                <ul className="list-disc list-inside mt-2">
+                  <li>Immediately removes a target body part</li>
+                  <li>Card is reshuffled back into deck after use</li>
+                  <li>Chop cards become more frequent as game progresses</li>
+                  <li>Players must plan around increasing chop frequency</li>
+                </ul>
+              </div>
               
-              <p className="font-bold text-lg mt-6">Body Parts & Powers</p>
-              <p>Each body part you possess grants you special powers. Use these abilities strategically to gain advantages throughout the game. Different combinations of parts can create powerful synergies!</p>
+              <div className="bg-yellow-200 rounded-xl p-4 border-2 border-black">
+                <p className="font-bold text-lg">Body Parts & Abilities</p>
+                <p className="mt-2">The game features two types of abilities:</p>
+                <ul className="list-disc list-inside mt-2">
+                  <li className="font-bold">Arm Effects (Active)
+                    <ul className="list-disc ml-6 mt-1">
+                      <li className="font-normal">Uses 1 action point</li>
+                      <li className="font-normal">Can be used with just one matching arm</li>
+                      <li className="font-normal">Each archetype has unique effects</li>
+                    </ul>
+                  </li>
+                  <li className="font-bold mt-3">Set Effects (Passive)
+                    <ul className="list-disc ml-6 mt-1">
+                      <li className="font-normal">No action cost</li>
+                      <li className="font-normal">Triggers automatically</li>
+                      <li className="font-normal">Requires specific body part combinations</li>
+                      <li className="font-normal">Different effects per archetype</li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
             </div>
           </RuleSection>
 
           <RuleSection 
-            title="Gameplay Example" 
-            icon={Swords}
-            isOpen={openSections.has('gameplay')}
-            onToggle={() => toggleSection('gameplay')}
-          >
-            <p className="italic">Here's a quick example of how a turn might play out:</p>
-            <div className="bg-white/50 rounded-xl p-4 mt-3 border-2 border-black">
-              <p>On your turn, you decide to chop your opponent's left arm off. They try to stop you with a "Just Say No" card, but you're not done yet! You still have 2 actions remaining.</p>
-              <p className="mt-2">You bind 2 of their body parts together and follow up with another chop card. Success! You've removed 2 of their limbs. But watch out - the next player might have plans for your limbs too...</p>
-            </div>
-          </RuleSection>
-
-          <RuleSection 
-            title="Winning Strategies" 
+            title="Strategy & Survival" 
             icon={Brain}
             isOpen={openSections.has('strategy')}
             onToggle={() => toggleSection('strategy')}
           >
             <div className="space-y-4">
-              <p className="font-bold">The Aggressor</p>
-              <p>Attack frequently with chop cards and debuff other players to gain advantages.</p>
+              <p>Players can adopt various strategies to survive:</p>
               
-              <p className="font-bold">The Defender</p>
-              <p>Focus on protecting your parts and collecting chop cards for the perfect moment.</p>
-              
-              <p className="font-bold">The Diplomat</p>
-              <p>Form temporary alliances to take down stronger players - just don't trust anyone too much!</p>
+              <div className="bg-purple-200 rounded-xl p-4 border-2 border-black">
+                <p className="font-bold mb-2">Offensive Strategies:</p>
+                <ul className="list-disc list-inside">
+                  <li>Aggressive use of chop cards</li>
+                  <li>Using debuff cards on stronger players</li>
+                  <li>Coordinating attacks with other players</li>
+                </ul>
+              </div>
+
+              <div className="bg-blue-200 rounded-xl p-4 border-2 border-black">
+                <p className="font-bold mb-2">Defensive Strategies:</p>
+                <ul className="list-disc list-inside">
+                  <li>Saving "Just Say No" cards for protection</li>
+                  <li>Building strong set effects for defense</li>
+                  <li>Strategic use of protective arm effects</li>
+                </ul>
+              </div>
+
+              <div className="bg-green-200 rounded-xl p-4 border-2 border-black">
+                <p className="font-bold mb-2">Social Strategies:</p>
+                <ul className="list-disc list-inside">
+                  <li>Forming temporary alliances</li>
+                  <li>Coordinating to take down leading players</li>
+                  <li>Negotiating and making deals</li>
+                </ul>
+              </div>
             </div>
           </RuleSection>
 
           <RuleSection 
-            title="Victory & Goals" 
+            title="Victory & Defeat" 
             icon={Trophy}
             isOpen={openSections.has('victory')}
             onToggle={() => toggleSection('victory')}
           >
-            <p>To win LIMBo, you must be the last player standing! Use your cards wisely, time your attacks carefully, and make (or break) alliances as needed.</p>
-            <p className="mt-4">Remember: The game is designed for light-hearted fun and friendly competition. Strategy is important, but the main goal is to create memorable moments with friends!</p>
+            <div className="space-y-4">
+              <div className="bg-yellow-300 rounded-xl p-4 border-2 border-black">
+                <p className="font-bold">Winning:</p>
+                <p>Be the last player with any body parts remaining! Even a single limb is enough to claim victory.</p>
+              </div>
+
+              <div className="bg-red-200 rounded-xl p-4 border-2 border-black">
+                <p className="font-bold">Losing:</p>
+                <ul className="list-disc list-inside mt-2">
+                  <li>Lose all body parts</li>
+                  <li>No replacement parts available on your turn</li>
+                  <li>All cards in hand go to discard pile</li>
+                </ul>
+              </div>
+
+              <div className="bg-purple-200 rounded-xl p-4 border-2 border-black">
+                <p className="font-bold">Remember:</p>
+                <p>LIMBo is designed for light-hearted fun and friendly competition. Strategy is important, but the main goal is to create memorable moments with friends!</p>
+              </div>
+            </div>
           </RuleSection>
         </div>
       </div>
